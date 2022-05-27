@@ -6,6 +6,7 @@ import os
 
 
 def download_csv(process_name: str, data: pd.DataFrame, path: str) -> str:
+    """Download a csv file in the server"""
     result_path = f'{utils.UPLOAD_FOLDER}{process_name}_result.csv'
     data.to_csv(result_path, index=True)
     os.remove(path)
@@ -13,6 +14,7 @@ def download_csv(process_name: str, data: pd.DataFrame, path: str) -> str:
 
 
 def group_by_request(path: str, affected_columns: List[str]) -> Response():
+    """Group by function processed on a csv file"""
     data = pd.read_csv(path)
     try:
         data_gb = data.groupby(affected_columns)
@@ -32,6 +34,7 @@ def group_by_request(path: str, affected_columns: List[str]) -> Response():
 
 
 def average_request(path: str, affected_columns: List[str]) -> Response():
+    """Average function processed on a csv file"""
     if len(affected_columns) < 2:
         return Response('More than 1 parameters is needed', status=403, mimetype='application/json')
 
@@ -49,6 +52,7 @@ def average_request(path: str, affected_columns: List[str]) -> Response():
 
 
 def variance_request(path: str, affected_columns: List[str]) -> Response():
+    """Variance function processed on a csv file"""
     if len(affected_columns) < 2:
         return Response('More than 1 parameters is needed', status=403, mimetype='application/json')
     data = pd.read_csv(path)
@@ -65,6 +69,7 @@ def variance_request(path: str, affected_columns: List[str]) -> Response():
 
 
 def ecart_type_request(path, affected_columns: List[str]) -> Response():
+    """Ecart Type function processed on a csv file"""
     if len(affected_columns) < 2:
         return Response('More than 1 parameters is needed', status=403, mimetype='application/json')
     data = pd.read_csv(path)
@@ -81,6 +86,7 @@ def ecart_type_request(path, affected_columns: List[str]) -> Response():
 
 
 def stats_request(path) -> Response():
+    """Stats function processed on a csv file"""
     data = pd.read_csv(path)
     try:
         res = data.describe()
@@ -95,6 +101,7 @@ def stats_request(path) -> Response():
 
 
 def no_null_request(path: str, affected_columns: List[str]) -> Response():
+    """Not null function processed on a csv file"""
     data = pd.read_csv(path)
     try:
         data_without_null = data.dropna(axis=0, how='any', thresh=None, subset=affected_columns, inplace=False)

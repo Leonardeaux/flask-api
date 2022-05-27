@@ -10,12 +10,14 @@ UPLOAD_FOLDER = '/Users/enzoleonardo/PycharmProjects/flask-api/final/'
 ALLOWED_EXTENSIONS = {'txt', 'csv'}
 
 
-def allowed_file(filename):
+def allowed_file(filename: str) -> bool:
+    """Verify if a file is in allowed dictionary"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def file_verification(a_request: werkzeug.local.LocalProxy) -> Dict[str, Any]:
+    """Verify if a file is in the body, is not empty"""
     if a_request.method == 'POST':
         if 'file' not in a_request.files:
             return {
@@ -57,6 +59,7 @@ def file_verification(a_request: werkzeug.local.LocalProxy) -> Dict[str, Any]:
 
 
 def json_to_arguments(json_str: str) -> List[str]:
+    """Convert a json struct to a list"""
     json_object = json.loads(json_str)
     if len(json_object) > 1:
         return []
